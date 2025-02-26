@@ -25,6 +25,10 @@
             background-color: #27a6f3;
             border: 1px solid #27a6f3;
         }
+
+        .output {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -85,13 +89,35 @@
         <div class="grid-item" onclick="toggleCheck(this)"></div>
         <div class="grid-item" onclick="toggleCheck(this)"></div>
         <div class="grid-item" onclick="toggleCheck(this)"></div>
-
-     
     </div>
+
+    <button onclick="generateImage()">인코딩</button>
+    <div class="output" id="output"></div>
 
     <script>
         function toggleCheck(element) {
             element.classList.toggle('checked');
+        }
+
+        function generateImage() {
+            const gridItems = document.querySelectorAll('.grid-item');
+            const canvas = document.createElement('canvas');
+            const padding = 5;
+            const rectSize = 50 - padding;
+            canvas.width = 7 * (rectSize + padding);
+            canvas.height = 7 * (rectSize + padding);
+            const ctx = canvas.getContext('2d');
+
+            gridItems.forEach((item, index) => {
+                const row = Math.floor(index / 7);
+                const col = index % 7;
+                ctx.fillStyle = item.classList.contains('checked') ? '#27a6f3' : 'white';
+                ctx.fillRect(col * (rectSize + padding), row * (rectSize + padding), rectSize, rectSize);
+            });
+
+            const output = document.getElementById('output');
+            output.innerHTML = '';
+            output.appendChild(canvas);
         }
     </script>
 </body>
